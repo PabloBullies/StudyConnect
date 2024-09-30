@@ -9,8 +9,8 @@ import java.util.List;
 
 @Builder
 @Data
-@Document("students")
-public class Student {
+@Document("mentors")
+public class Mentor {
 
     @Id
     String id;
@@ -23,9 +23,7 @@ public class Student {
 
     List<String> scientificInterests;
 
-    List<String> skills;
+    List<String> diplomaTopics;
 
     String department;
-
-    String initiativeTheme;
 }
