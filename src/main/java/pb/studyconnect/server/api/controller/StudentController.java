@@ -21,9 +21,8 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping(STUDENTS)
-    public ResponseEntity<AddStudentResponse> create(@RequestBody AddStudentRequest addStudentRequest) {
-        var student = studentService.create(addStudentRequest);
-        return ResponseEntity.ok(student);
+    public AddStudentResponse create(@RequestBody AddStudentRequest addStudentRequest) {
+        return studentService.create(addStudentRequest);
     }
 
 }

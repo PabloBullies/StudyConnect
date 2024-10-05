@@ -1,22 +1,22 @@
 package pb.studyconnect.server.api.dto.request;
 
-import lombok.Value;
-
 import java.util.List;
 
-@Value
-public class AddStudentRequest {
-    String name;
+public record AddStudentRequest(
 
-    String email;
+        String name,
 
-    String tgNickname;
+        String email,
 
-    List<String> scientificInterests;
+        String tgNickname,
 
-    List<String> skills;
+        List<String> scientificInterests,
 
-    String department;
+        List<String> skills,
 
-    String initiativeTheme;
+        String department,
+
+        String initiativeTheme
+) {
+
 }

@@ -7,7 +7,7 @@ import pb.studyconnect.server.api.dto.response.AddMentorResponse;
 import pb.studyconnect.server.model.Mentor;
 import pb.studyconnect.server.repository.MentorRepository;
 import pb.studyconnect.server.service.mentors.MentorService;
-import pb.studyconnect.server.util.Mapper;
+import pb.studyconnect.server.util.MentorMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +17,8 @@ public class DefaultMentorService implements MentorService {
 
     @Override
     public AddMentorResponse create(AddMentorRequest addMentorRequest) {
-        Mentor mentor = Mapper.mapToMentor(addMentorRequest);
+        Mentor mentor = MentorMapper.INSTANCE.mapToMentor(addMentorRequest);
         mentorRepository.save(mentor);
-        return Mapper.mapToAddMentorResponse(mentor);
+        return MentorMapper.INSTANCE.mapToAddMentorResponse(mentor);
     }
 }

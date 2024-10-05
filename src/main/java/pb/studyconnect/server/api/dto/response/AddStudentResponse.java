@@ -1,13 +1,5 @@
 package pb.studyconnect.server.api.dto.response;
 
-import lombok.Builder;
-import lombok.Value;
+public record AddStudentResponse(String id, String name) {
 
-@Builder
-@Value
-public class AddStudentResponse {
-
-    String id;
-
-    String name;
 }

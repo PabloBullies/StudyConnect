@@ -21,8 +21,7 @@ public class MentorController {
     private final MentorService mentorService;
 
     @PostMapping(MENTORS)
-    public ResponseEntity<AddMentorResponse> create(@RequestBody AddMentorRequest addMentorRequest) {
-        var mentor = mentorService.create(addMentorRequest);
-        return ResponseEntity.ok(mentor);
+    public AddMentorResponse create(@RequestBody AddMentorRequest addMentorRequest) {
+        return mentorService.create(addMentorRequest);
     }
 }
