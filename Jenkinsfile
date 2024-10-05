@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Prepare data base') {
             steps {
-                sh 'docker compose up'
+                sh 'docker compose up -d'
             }
         }
 
@@ -12,6 +12,12 @@ pipeline {
             steps {
                 sh './gradlew clean test'
             }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker compose down'
         }
     }
 }
