@@ -13,13 +13,14 @@ import pb.studyconnect.server.util.StudentMapper;
 @RequiredArgsConstructor
 public class DefaultStudentService implements StudentService {
 
-    private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
+    private final StudentRepository studentRepository;
 
     @Override
     public AddStudentResponse create(AddStudentRequest addStudentRequest) {
-        Student student = StudentMapper.INSTANCE.mapToStudent(addStudentRequest);
+        Student student = studentMapper.mapToStudent(addStudentRequest);
         studentRepository.save(student);
-        return StudentMapper.INSTANCE.mapToAddStudentResponse(student);
+        return studentMapper.mapToAddStudentResponse(student);
     }
 }

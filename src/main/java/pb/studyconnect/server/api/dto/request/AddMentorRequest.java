@@ -12,8 +12,6 @@ public record AddMentorRequest(
 
         List<String> scientificInterests,
 
-        List<String> diplomaTopics,
-
         String department
 ) {
 

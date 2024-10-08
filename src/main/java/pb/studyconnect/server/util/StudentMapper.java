@@ -9,8 +9,6 @@ import pb.studyconnect.server.model.Student;
 @Mapper
 public interface StudentMapper {
 
-    StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
-
     Student mapToStudent(AddStudentRequest request);
 
     AddStudentResponse mapToAddStudentResponse(Student student);
