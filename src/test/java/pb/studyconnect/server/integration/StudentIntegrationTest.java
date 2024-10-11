@@ -7,12 +7,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import io.restassured.RestAssured;
 
-public class StudentIntegrationTest {
-
-    @BeforeAll
-    public static void setup() {
-        RestAssured.baseURI = "http://localhost:8080";
-    }
+public class StudentIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void createStudent() {

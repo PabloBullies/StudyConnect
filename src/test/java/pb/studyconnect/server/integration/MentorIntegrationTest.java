@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import io.restassured.RestAssured;
 
-public class MentorIntegrationTest {
+import java.io.IOException;
+import java.util.Properties;
 
-    @BeforeAll
-    public static void setup() {
-        RestAssured.baseURI = "http://localhost:8080";
-    }
+public class MentorIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void createMentor() {
