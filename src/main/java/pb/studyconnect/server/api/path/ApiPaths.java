@@ -8,4 +8,6 @@ public final class ApiPaths {
     public static final String MENTORS = "/mentors";
 
     public static final String DIPLOMA_TOPICS = "/diploma-topics";
+
+    public static final String SUGGESTIONS = "/suggest";
 }
