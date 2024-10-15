@@ -27,11 +27,28 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:5.5.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
+jar {
+    enabled = false
+}
+
+test {
+    enabled = gradle.startParameter.taskNames.contains('test')
+    systemProperties(System.getProperties())
     useJUnitPlatform()
+}
+
+tasks.register('testJar', Jar) {
+    dependsOn(compileJava)
+    dependsOn(processResources)
+    from {
+       sourceSets.test.runtimeClasspath.filter { it.name != 'main' }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    archiveClassifier = 'test'
+    from sourceSets.test.output
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
