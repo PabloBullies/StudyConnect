@@ -1,4 +1,4 @@
-package pb.studyconnect.server.util;
+package pb.studyconnect.server.util.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

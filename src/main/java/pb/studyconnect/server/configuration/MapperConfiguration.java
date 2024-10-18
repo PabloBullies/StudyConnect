@@ -3,9 +3,9 @@ package pb.studyconnect.server.configuration;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pb.studyconnect.server.util.DiplomaTopicMapper;
-import pb.studyconnect.server.util.MentorMapper;
-import pb.studyconnect.server.util.StudentMapper;
+import pb.studyconnect.server.util.mapper.DiplomaTopicMapper;
+import pb.studyconnect.server.util.mapper.MentorMapper;
+import pb.studyconnect.server.util.mapper.StudentMapper;
 
 @Configuration
 public class MapperConfiguration {

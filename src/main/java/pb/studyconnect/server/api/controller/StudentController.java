@@ -1,5 +1,6 @@
 package pb.studyconnect.server.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping(STUDENTS)
-    public AddStudentResponse create(@RequestBody AddStudentRequest addStudentRequest) {
+    public AddStudentResponse create(@RequestBody @Valid AddStudentRequest addStudentRequest) {
         return studentService.create(addStudentRequest);
     }
 

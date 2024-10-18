@@ -7,7 +7,7 @@ import pb.studyconnect.server.api.dto.response.AddStudentResponse;
 import pb.studyconnect.server.model.Student;
 import pb.studyconnect.server.repository.StudentRepository;
 import pb.studyconnect.server.service.students.StudentService;
-import pb.studyconnect.server.util.StudentMapper;
+import pb.studyconnect.server.util.mapper.StudentMapper;
 
 @Service
 @RequiredArgsConstructor
