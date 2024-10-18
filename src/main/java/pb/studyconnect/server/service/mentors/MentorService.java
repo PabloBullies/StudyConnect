@@ -11,8 +11,6 @@ public interface MentorService {
 
     MentorResponse create(MentorRequest mentorRequest);
 
-    List<DiplomaTopicResponse> addDiplomaTopics(String mentorId, List<DiplomaTopicRequest> request);
-
     MentorResponse edit(String mentorId, MentorRequest mentorRequest);
 
     MentorResponse get(String mentorId);

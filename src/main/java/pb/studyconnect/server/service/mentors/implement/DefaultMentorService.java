@@ -47,27 +47,6 @@ public class DefaultMentorService implements MentorService {
 
     @Transactional
     @Override
-    public List<DiplomaTopicResponse> addDiplomaTopics(String mentorId, List<DiplomaTopicRequest> request) {
-        var mentor = mentorRepository.findById(mentorId)
-                .orElseThrow(
-                        () -> new PabloBullersException(
-                                HttpStatus.NOT_FOUND.value(),
-                                "Not found mentor with id: '" + mentorId + "'"
-                        )
-                );
-
-        var diplomaTopics = request.stream()
-                .map(diplomaTopicMapper::mapToDiplomaTopic)
-                .toList();
-        diplomaTopicRepository.saveAll(diplomaTopics);
-
-        mentor.setDiplomaTopics(diplomaTopics);
-        mentorRepository.save(mentor);
-        return diplomaTopics.stream().map(diplomaTopicMapper::mapToDiplomaTopicResponse).toList();
-    }
-
-    @Transactional
-    @Override
     public MentorResponse edit(String mentorId, MentorRequest mentorRequest) {
         var mentor = mentorRepository.findById(mentorId)
                 .orElseThrow(

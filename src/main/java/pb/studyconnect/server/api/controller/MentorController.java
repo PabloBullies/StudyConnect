@@ -35,14 +35,6 @@ public class MentorController {
         return mentorService.create(mentorRequest);
     }
 
-    @PatchMapping(MENTORS + "/{id}" + DIPLOMA_TOPICS)
-    public List<DiplomaTopicResponse> addDiplomaTopics(
-            @PathVariable String id,
-            @RequestBody @Valid List<DiplomaTopicRequest> request
-    ) {
-        return mentorService.addDiplomaTopics(id, request);
-    }
-
     @PutMapping(MENTORS + "/{id}")
     public MentorResponse edit(@PathVariable String id, @RequestBody @Valid MentorRequest mentorRequest) {
         return mentorService.edit(id, mentorRequest);
