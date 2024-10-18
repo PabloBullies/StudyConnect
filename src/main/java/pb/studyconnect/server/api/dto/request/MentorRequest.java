@@ -1,9 +1,6 @@
 package pb.studyconnect.server.api.dto.request;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -16,7 +13,7 @@ import static pb.studyconnect.server.util.Messages.SCIENTIFIC_INTERESTS_MINIMUM_
 import static pb.studyconnect.server.util.Messages.TG_NICKNAME_IS_NOT_IN_FORMAT;
 import static pb.studyconnect.server.util.Messages.TG_NICKNAME_MINIMUM_LENGTH;
 
-public record AddMentorRequest(
+public record MentorRequest(
 
         @NotBlank(message = NAME_MUST_NOT_BE_EMPTY)
         String name,
@@ -32,7 +29,9 @@ public record AddMentorRequest(
         List<String> scientificInterests,
 
         @NotBlank(message = DEPARTMENT_MUST_NOT_BE_EMPTY)
-        String department
+        String department,
+
+        List<DiplomaTopicRequest> diplomaTopics
 ) {
 
 }

@@ -1,14 +1,14 @@
 package pb.studyconnect.server.util.mapper;
 
 import org.mapstruct.Mapper;
-import pb.studyconnect.server.api.dto.request.AddDiplomaTopicRequest;
-import pb.studyconnect.server.api.dto.response.AddDiplomaTopicResponse;
+import pb.studyconnect.server.api.dto.request.DiplomaTopicRequest;
+import pb.studyconnect.server.api.dto.response.DiplomaTopicResponse;
 import pb.studyconnect.server.model.DiplomaTopic;
 
 @Mapper
 public interface DiplomaTopicMapper {
 
-    DiplomaTopic mapToDiplomaTopic(AddDiplomaTopicRequest request);
+    DiplomaTopic mapToDiplomaTopic(DiplomaTopicRequest request);
 
-    AddDiplomaTopicResponse mapToDiplomaTopicResponse(DiplomaTopic diplomaTopic);
+    DiplomaTopicResponse mapToDiplomaTopicResponse(DiplomaTopic diplomaTopic);
 }
