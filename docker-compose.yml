@@ -3,7 +3,6 @@ services:
   mongo:
     image: mongo
     container_name: ${MONGO_NAME}
-    restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: username
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -11,7 +10,6 @@ services:
   master:
     build: .
     container_name: ${MASTER_NAME}
-    restart: always
     command: --mongodb.host=${MONGO_NAME}
     depends_on:
       mongo:
