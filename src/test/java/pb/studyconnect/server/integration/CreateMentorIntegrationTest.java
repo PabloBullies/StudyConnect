@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 
 
-public class MentorIntegrationTest extends BaseIntegrationTest {
+public class CreateMentorIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void createMentor() {
