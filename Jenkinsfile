@@ -32,7 +32,10 @@ pipeline {
                 script {
                     sh "docker compose up -d --build"
                     sh "docker logs -f $TESTS_NAME"
-                    sh "docker inspect $TESTS_NAME --format='{{.State.ExitCode}}'"
+                    status = sh(script: "docker inspect $TESTS_NAME --format='{{.State.ExitCode}}'" returnStdout: true).trim() as Integer
+                    if (status != 0) {
+                        error("Tests failed")
+                    }
                 }
             }
         }
