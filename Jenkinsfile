@@ -59,7 +59,7 @@ pipeline {
 
     post {
         always {
-            sh "docker-compose down --rmi local"
+            sh "docker compose down --rmi local"
         }
     }
 }
