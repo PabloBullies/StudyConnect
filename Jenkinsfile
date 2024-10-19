@@ -5,6 +5,10 @@ pipeline {
         }
     }
 
+    options {
+        ansiColor('xterm')
+    }
+
     environment {
         MONGO_NAME = "test-mongo-${env.BUILD_TAG}".toLowerCase()
         MASTER_NAME = "test-master-${env.BUILD_TAG}".toLowerCase()
