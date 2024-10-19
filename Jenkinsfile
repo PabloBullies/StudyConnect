@@ -60,7 +60,6 @@ pipeline {
     post {
         always {
             sh 'docker compose down --rmi local'
-            sh './gradlew --stop'
         }
     }
 }
