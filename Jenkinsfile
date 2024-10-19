@@ -39,11 +39,27 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+
+            steps {
+                script {
+                    sh 'docker build . -t study-master'
+                    sh 'docker stop study-master-prod || true'
+                    withCredentials([usernamePassword(credentialsId: 'mongo-prod-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "docker run --rm --name study-master-prod -p 8100:8080 -d study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
+                    }
+                }
+            }
+        }
     }
 
     post {
         always {
-            sh "docker compose down"
+            sh "docker compose down --rmi"
         }
     }
 }
