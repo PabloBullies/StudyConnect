@@ -50,7 +50,7 @@ pipeline {
                     sh 'docker build . -t study-master'
                     sh 'docker stop study-master-prod || true'
                     withCredentials([usernamePassword(credentialsId: 'mongo-prod-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "docker run --rm --name study-master-prod -p 8100:8080 -d study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
+                        sh "docker run --rm --name study-master-prod --network master-prod-network -p 8100:8080 -d study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
                     }
                 }
             }
