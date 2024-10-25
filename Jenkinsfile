@@ -5,6 +5,10 @@ pipeline {
         }
     }
 
+    options {
+        ansiColor('xterm')
+    }
+
     environment {
         NETWORK_NAME = "test-network-${env.BUILD_TAG}".toLowerCase()
         MONGO_NAME = "test-mongo-${env.BUILD_TAG}".toLowerCase()
@@ -37,6 +41,7 @@ pipeline {
             steps {
                 script {
                     sh "docker run --rm --network $NETWORK_NAME --name $MASTER_NAME -d $masterImageId --mongodb.host=$MONGO_NAME"
+                    sh 'sleep 10'
                     sh "docker run --rm --network $NETWORK_NAME $testImageId '-Dmaster.host=http://${MASTER_NAME}:8080' -jar junit.jar --classpath test.jar --scan-classpath"
                 }
             }
