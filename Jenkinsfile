@@ -5,30 +5,24 @@ pipeline {
         }
     }
 
+    options {
+        ansiColor('xterm')
+    }
+
     environment {
-        NETWORK_NAME = "test-network-${env.BUILD_TAG}".toLowerCase()
         MONGO_NAME = "test-mongo-${env.BUILD_TAG}".toLowerCase()
         MASTER_NAME = "test-master-${env.BUILD_TAG}".toLowerCase()
+        TESTS_NAME = "test-tests-${env.BUILD_TAG}".toLowerCase()
+        COMPOSE_PROJECT_NAME = "${env.BUILD_TAG}".toLowerCase()
     }
 
     stages {
         stage('Build') {
             steps {
                 script {
-                    sh './gradlew clean build'
-                    masterImageId = sh(script: 'docker build -q .', returnStdout: true).trim()
-
-                    sh './gradlew clean testJar'
-                    testImageId = sh(script: 'docker build -q -f Dockerfile.itest .', returnStdout: true).trim()
-                }
-            }
-        }
-
-        stage('Prepare data base') {
-            steps {
-                script {
-                    sh "docker network create $NETWORK_NAME"
-                    sh "docker run --rm --network $NETWORK_NAME --name $MONGO_NAME -e MONGO_INITDB_ROOT_USERNAME=username -e MONGO_INITDB_ROOT_PASSWORD=password -d mongo"
+                    sh './gradlew clean'
+                    sh './gradlew build'
+                    sh './gradlew testJar'
                 }
             }
         }
@@ -36,8 +30,28 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh "docker run --rm --network $NETWORK_NAME --name $MASTER_NAME -d $masterImageId --mongodb.host=$MONGO_NAME"
-                    sh "docker run --rm --network $NETWORK_NAME $testImageId '-Dmaster.host=http://${MASTER_NAME}:8080' -jar junit.jar --classpath test.jar --scan-classpath"
+                    sh "docker compose up -d --build"
+                    sh "docker logs -f $TESTS_NAME"
+                    status = sh(script: "docker inspect $TESTS_NAME --format='{{.State.ExitCode}}'", returnStdout: true).trim() as Integer
+                    if (status != 0) {
+                        error("Tests failed")
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+
+            steps {
+                script {
+                    sh 'docker build . -t study-master'
+                    sh 'docker rm -f study-master-prod || true'
+                    withCredentials([usernamePassword(credentialsId: 'mongo-prod-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "docker run --restart always --name study-master-prod --network master-prod-network -p 8100:8080 -d study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
+                    }
                 }
             }
         }
@@ -45,10 +59,7 @@ pipeline {
 
     post {
         always {
-            sh "docker logs $MASTER_NAME"
-            sh "docker stop $MONGO_NAME"
-            sh "docker stop $MASTER_NAME"
-            sh "docker network rm $NETWORK_NAME"
+            sh 'docker compose down --rmi local'
         }
     }
 }
