@@ -44,7 +44,7 @@ public class DefaultMentorService implements MentorService {
         var mentor = mentorRepository.findById(mentorId)
                 .orElseThrow(
                         () -> new PabloBullersException(
-                                HttpStatus.NOT_FOUND.value(),
+                                HttpStatus.NOT_FOUND,
                                 "Not found mentor with id: '" + mentorId + "'"
                         )
                 );
