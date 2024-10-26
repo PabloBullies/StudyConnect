@@ -2,14 +2,31 @@ services:
 
   mongo:
     image: mongo
-    restart: always
-    ports:
-      - 27017:27017
+    container_name: ${MONGO_NAME}
     environment:
       MONGO_INITDB_ROOT_USERNAME: username
       MONGO_INITDB_ROOT_PASSWORD: password
-    volumes:
-      - data:/data/db
 
-volumes:
-  data:
+  master:
+    build: .
+    container_name: ${MASTER_NAME}
+    command: --mongodb.host=${MONGO_NAME}
+    depends_on:
+      mongo:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      start_period: 10s
+      retries: 5
+      interval: 5s
+      timeout: 2s
+
+  tests:
+    build:
+      context: .
+      dockerfile: testContainer/Dockerfile
+    container_name: ${TESTS_NAME}
+    command: ['-Dmaster.host=http://${MASTER_NAME}:8080', -jar, junit.jar, --classpath, test.jar, --scan-classpath]
+    depends_on:
+      master:
+        condition: service_healthy

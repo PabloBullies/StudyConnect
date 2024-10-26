@@ -52,7 +52,7 @@ tasks.register('testJar', Jar) {
     from {
        sourceSets.test.runtimeClasspath.filter { it.name != 'main' }.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    archiveClassifier = 'test'
+    archiveBaseName = 'testJar'
     from sourceSets.test.output
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
