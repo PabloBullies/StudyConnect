@@ -2,13 +2,12 @@ package pb.studyconnect.server.service.mentors.implement;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pb.studyconnect.server.api.dto.request.AddDiplomaTopicRequest;
-import pb.studyconnect.server.api.dto.request.AddMentorRequest;
-import pb.studyconnect.server.api.dto.response.AddDiplomaTopicResponse;
-import pb.studyconnect.server.api.dto.response.AddMentorResponse;
+import pb.studyconnect.server.api.dto.request.DiplomaTopicRequest;
+import pb.studyconnect.server.api.dto.request.MentorRequest;
+import pb.studyconnect.server.api.dto.response.DiplomaTopicResponse;
+import pb.studyconnect.server.api.dto.response.MentorResponse;
 import pb.studyconnect.server.exception.PabloBullersException;
 import pb.studyconnect.server.model.Mentor;
 import pb.studyconnect.server.repository.DiplomaTopicRepository;
@@ -31,16 +30,24 @@ public class DefaultMentorService implements MentorService {
 
     private final DiplomaTopicRepository diplomaTopicRepository;
 
+    @Transactional
     @Override
-    public AddMentorResponse create(AddMentorRequest addMentorRequest) {
-        Mentor mentor = mentorMapper.mapToMentor(addMentorRequest);
+    public MentorResponse create(MentorRequest mentorRequest) {
+        Mentor mentor = mentorMapper.mapToMentor(mentorRequest);
+        var diplomaTopics = mentorRequest.diplomaTopics()
+                .stream()
+                .map(diplomaTopicMapper::mapToDiplomaTopic)
+                .toList();
+
+        diplomaTopicRepository.saveAll(diplomaTopics);
+        mentor.setDiplomaTopics(diplomaTopics);
         mentorRepository.save(mentor);
-        return mentorMapper.mapToAddMentorResponse(mentor);
+        return mentorMapper.mapToMentorResponse(mentor);
     }
 
     @Transactional
     @Override
-    public List<AddDiplomaTopicResponse> addDiplomaTopics(String mentorId, List<AddDiplomaTopicRequest> request) {
+    public MentorResponse edit(String mentorId, MentorRequest mentorRequest) {
         var mentor = mentorRepository.findById(mentorId)
                 .orElseThrow(
                         () -> new PabloBullersException(
@@ -49,17 +56,53 @@ public class DefaultMentorService implements MentorService {
                         )
                 );
 
-        var diplomaTopics = request.stream()
+        if (mentor.getDiplomaTopics() != null) {
+            diplomaTopicRepository.deleteAll(mentor.getDiplomaTopics());
+        }
+
+        var diplomaTopics = mentorRequest.diplomaTopics()
+                .stream()
                 .map(diplomaTopicMapper::mapToDiplomaTopic)
                 .toList();
         diplomaTopicRepository.saveAll(diplomaTopics);
 
-        if (mentor.getDiplomaTopics() == null) {
-            mentor.setDiplomaTopics(diplomaTopics);
-        } else {
-            mentor.getDiplomaTopics().addAll(diplomaTopics);
-        }
+        mentor.setName(mentorRequest.name());
+        mentor.setEmail(mentorRequest.email());
+        mentor.setTgNickname(mentorRequest.tgNickname());
+        mentor.setScientificInterests(mentorRequest.scientificInterests());
+        mentor.setDepartment(mentorRequest.department());
+        mentor.setDiplomaTopics(diplomaTopics);
         mentorRepository.save(mentor);
-        return diplomaTopics.stream().map(diplomaTopicMapper::mapToDiplomaTopicResponse).toList();
+        return mentorMapper.mapToMentorResponse(mentor);
     }
+
+    @Override
+    public MentorResponse get(String mentorId) {
+        var mentor = mentorRepository.findById(mentorId)
+                .orElseThrow(
+                        () -> new PabloBullersException(
+                                HttpStatus.NOT_FOUND,
+                                "Not found mentor with id: '" + mentorId + "'"
+                        )
+                );
+        return mentorMapper.mapToMentorResponse(mentor);
+    }
+
+    @Transactional
+    @Override
+    public void delete(String mentorId) {
+        var mentor = mentorRepository.findById(mentorId)
+                .orElseThrow(
+                        () -> new PabloBullersException(
+                                HttpStatus.NOT_FOUND,
+                                "Not found mentor with id: '" + mentorId + "'"
+                        )
+                );
+        if (mentor.getDiplomaTopics() != null) {
+            diplomaTopicRepository.deleteAll(mentor.getDiplomaTopics());
+        }
+        mentorRepository.delete(mentor);
+    }
+
+
 }

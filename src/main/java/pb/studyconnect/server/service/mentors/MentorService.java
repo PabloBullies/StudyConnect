@@ -1,16 +1,20 @@
 package pb.studyconnect.server.service.mentors;
 
-import pb.studyconnect.server.api.dto.request.AddDiplomaTopicRequest;
-import pb.studyconnect.server.api.dto.request.AddMentorRequest;
-import pb.studyconnect.server.api.dto.response.AddDiplomaTopicResponse;
-import pb.studyconnect.server.api.dto.response.AddMentorResponse;
+import pb.studyconnect.server.api.dto.request.DiplomaTopicRequest;
+import pb.studyconnect.server.api.dto.request.MentorRequest;
+import pb.studyconnect.server.api.dto.response.DiplomaTopicResponse;
+import pb.studyconnect.server.api.dto.response.MentorResponse;
 
 import java.util.List;
 
 public interface MentorService {
 
-    AddMentorResponse create(AddMentorRequest addMentorRequest);
+    MentorResponse create(MentorRequest mentorRequest);
 
-    List<AddDiplomaTopicResponse> addDiplomaTopics(String mentorId, List<AddDiplomaTopicRequest> request);
+    MentorResponse edit(String mentorId, MentorRequest mentorRequest);
+
+    MentorResponse get(String mentorId);
+
+    void delete(String mentorId);
 
 }

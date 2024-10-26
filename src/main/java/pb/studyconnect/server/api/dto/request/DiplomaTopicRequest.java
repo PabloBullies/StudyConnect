@@ -6,7 +6,7 @@ import java.util.List;
 
 import static pb.studyconnect.server.util.Messages.NAME_MUST_NOT_BE_EMPTY;
 
-public record AddDiplomaTopicRequest(
+public record DiplomaTopicRequest(
 
         @NotBlank(message = NAME_MUST_NOT_BE_EMPTY)
         String name,
