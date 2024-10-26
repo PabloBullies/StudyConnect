@@ -31,7 +31,7 @@ public class DefaultStudentService implements StudentService {
         var student = studentRepository.findById(studentId)
                 .orElseThrow(
                         () -> new PabloBullersException(
-                                HttpStatus.NOT_FOUND.value(),
+                                HttpStatus.NOT_FOUND,
                                 "Not found student with id: '" + studentId + "'"
                         )
                 );
@@ -52,7 +52,7 @@ public class DefaultStudentService implements StudentService {
         var student = studentRepository.findById(studentId)
                 .orElseThrow(
                         () -> new PabloBullersException(
-                                HttpStatus.NOT_FOUND.value(),
+                                HttpStatus.NOT_FOUND,
                                 "Not found student with id: '" + studentId + "'"
                         )
                 );
@@ -64,7 +64,7 @@ public class DefaultStudentService implements StudentService {
         var student = studentRepository.findById(studentId)
                 .orElseThrow(
                         () -> new PabloBullersException(
-                                HttpStatus.NOT_FOUND.value(),
+                                HttpStatus.NOT_FOUND,
                                 "Not found student with id: '" + studentId + "'"
                         )
                 );
