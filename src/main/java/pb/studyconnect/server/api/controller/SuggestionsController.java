@@ -16,7 +16,7 @@ import static pb.studyconnect.server.api.path.ApiPaths.*;
 @RequiredArgsConstructor
 public class SuggestionsController {
     @GetMapping(MENTORS+"/{id}")
-    public SuggestMentorResponse suggest(@PathVariable Long id) {
+    public SuggestMentorResponse suggest(@PathVariable String id) {
         return new SuggestMentorResponse("0","Александр Власов",
                 Arrays.asList("Нефть", "Микроконтроллеры", "OOP"), new ArrayList<DiplomaTopic>(), "КафСИ");
 
