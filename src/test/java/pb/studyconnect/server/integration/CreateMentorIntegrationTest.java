@@ -71,7 +71,7 @@ public class CreateMentorIntegrationTest extends BaseIntegrationTest {
                           "name": "Дмитрий Иртеров",
                           "email": "fat@nsuru",
                           "tgNickname": "@fat_brother",
-                          "scientificInterests": ["ОСИ", "peer-to-peer"],
+                          "scientificInterests": ["ОСИ", "peer-to-peer", "CDM-16"],
                           "department": "кафедра систем информатики",
                           "diplomaTopics": [{
                                 "name": "Разработка модуля для системы оркестрации контейнеров",
@@ -97,7 +97,7 @@ public class CreateMentorIntegrationTest extends BaseIntegrationTest {
                           "name": "Дмитрий Иртеров",
                           "email": "fat!nsu.ru",
                           "tgNickname": "@fat_brother",
-                          "scientificInterests": ["ОСИ", "peer-to-peer"],
+                          "scientificInterests": ["ОСИ", "peer-to-peer", "CDM-16"],
                           "department": "кафедра систем информатики",
                           "diplomaTopics": [{
                                 "name": "Разработка модуля для системы оркестрации контейнеров",
@@ -123,7 +123,7 @@ public class CreateMentorIntegrationTest extends BaseIntegrationTest {
               "name": "Дмитрий Иртеров",
               "email": "fatnsu.ru",
               "tgNickname": "@FatBrother",
-              "scientificInterests": ["ОСИ", "peer-to-peer"],
+              "scientificInterests": ["ОСИ", "peer-to-peer", "CDM-16"],
               "diplomaTopics": ["Системы оркестрации контейнеров бла бла бла"],
               "department": "кафедра систем информатики"
             }
@@ -145,7 +145,7 @@ public class CreateMentorIntegrationTest extends BaseIntegrationTest {
               "name": "Дмитрий Иртеров",
               "email": "fatnsu.ru",
               "tgNickname": "fatBr@ther",
-              "scientificInterests": ["ОСИ", "peer-to-peer"],
+              "scientificInterests": ["ОСИ", "peer-to-peer", "CDM-16"],
               "diplomaTopics": ["Системы оркестрации контейнеров бла бла бла"],
               "department": "кафедра систем информатики"
             }
@@ -167,7 +167,7 @@ public class CreateMentorIntegrationTest extends BaseIntegrationTest {
               "name": "Дмитрий Иртеров",
               "email": "fatnsu.ru",
               "tgNickname": "@fat-Brother",
-              "scientificInterests": ["ОСИ", "peer-to-peer"],
+              "scientificInterests": ["ОСИ", "peer-to-peer", "CDM-16"],
               "diplomaTopics": ["Системы оркестрации контейнеров бла бла бла"],
               "department": "кафедра систем информатики"
             }
@@ -189,7 +189,7 @@ public class CreateMentorIntegrationTest extends BaseIntegrationTest {
               "name": "Дмитрий Иртеров!!!",
               "email": "fatnsu.ru",
               "tgNickname": "fatBr@ther",
-              "scientificInterests": ["ОСИ", "peer-to-peer"],
+              "scientificInterests": ["ОСИ", "peer-to-peer", "CDM-16"],
               "diplomaTopics": ["Системы оркестрации контейнеров бла бла бла"],
               "department": "кафедра систем информатики"
             }
