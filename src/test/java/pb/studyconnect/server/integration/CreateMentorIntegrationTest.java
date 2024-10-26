@@ -121,7 +121,7 @@ public class CreateMentorIntegrationTest extends BaseIntegrationTest {
                 .body("""
             {
               "name": "Дмитрий Иртеров",
-              "email": "fatnsu.ru",
+              "email": "fat@nsu.ru",
               "tgNickname": "@FatBrother",
               "scientificInterests": ["ОСИ", "peer-to-peer", "CDM-16"],
               "diplomaTopics": ["Системы оркестрации контейнеров бла бла бла"],
