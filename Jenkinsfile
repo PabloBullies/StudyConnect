@@ -27,6 +27,14 @@ pipeline {
             }
         }
 
+        stage('SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('sonar-master') {
+                    sh './gradlew sonar'
+                }
+            }
+        }
+
         stage('Test') {
             steps {
                 script {
