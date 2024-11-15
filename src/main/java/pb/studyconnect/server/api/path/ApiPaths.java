@@ -10,4 +10,6 @@ public final class ApiPaths {
     public static final String DIPLOMA_TOPICS = "/diploma-topics";
 
     public static final String SUGGESTIONS = "/suggest";
+
+    public static final String MATCHES = "/matches";
 }

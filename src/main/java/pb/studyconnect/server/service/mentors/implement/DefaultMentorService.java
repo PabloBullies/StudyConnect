@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pb.studyconnect.server.api.dto.request.DiplomaTopicRequest;
 import pb.studyconnect.server.api.dto.request.MentorRequest;
-import pb.studyconnect.server.api.dto.response.DiplomaTopicResponse;
 import pb.studyconnect.server.api.dto.response.MentorResponse;
 import pb.studyconnect.server.exception.PabloBullersException;
 import pb.studyconnect.server.model.Mentor;
@@ -16,7 +14,6 @@ import pb.studyconnect.server.service.mentors.MentorService;
 import pb.studyconnect.server.util.mapper.DiplomaTopicMapper;
 import pb.studyconnect.server.util.mapper.MentorMapper;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +33,7 @@ public class DefaultMentorService implements MentorService {
         Mentor mentor = mentorMapper.mapToMentor(mentorRequest);
         var diplomaTopics = mentorRequest.diplomaTopics()
                 .stream()
-                .map(diplomaTopicMapper::mapToDiplomaTopic)
+                .map(topic -> diplomaTopicMapper.mapToDiplomaTopic(topic, mentor.getId()))
                 .toList();
 
         diplomaTopicRepository.saveAll(diplomaTopics);
@@ -62,7 +59,7 @@ public class DefaultMentorService implements MentorService {
 
         var diplomaTopics = mentorRequest.diplomaTopics()
                 .stream()
-                .map(diplomaTopicMapper::mapToDiplomaTopic)
+                .map(topic -> diplomaTopicMapper.mapToDiplomaTopic(topic, mentorId))
                 .toList();
         diplomaTopicRepository.saveAll(diplomaTopics);
 
