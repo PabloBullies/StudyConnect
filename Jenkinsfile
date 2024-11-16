@@ -9,6 +9,10 @@ pipeline {
         ansiColor('xterm')
     }
 
+    parameters {
+        booleanParam(defaultValue: false, name: 'sonar')
+    }
+
     environment {
         MONGO_NAME = "test-mongo-${env.BUILD_TAG}".toLowerCase()
         MASTER_NAME = "test-master-${env.BUILD_TAG}".toLowerCase()
@@ -28,6 +32,9 @@ pipeline {
         }
 
         stage('SonarQube analysis') {
+            when {
+                expression { sonar }
+            }
             steps {
                 withSonarQubeEnv('sonar-master') {
                     sh './gradlew sonar'
