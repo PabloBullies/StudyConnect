@@ -7,10 +7,13 @@ services:
       MONGO_INITDB_ROOT_USERNAME: username
       MONGO_INITDB_ROOT_PASSWORD: password
 
+
   master:
     build: .
     container_name: ${MASTER_NAME}
     command: --mongodb.host=${MONGO_NAME}
+    ports:
+      - 8080:8080
     depends_on:
       mongo:
         condition: service_started
@@ -19,7 +22,7 @@ services:
       start_period: 10s
       retries: 5
       interval: 5s
-      timeout: 2s
+      timeout: 5s
 
   tests:
     build:
