@@ -7,11 +7,11 @@ services:
       MONGO_INITDB_ROOT_USERNAME: username
       MONGO_INITDB_ROOT_PASSWORD: password
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      start_period: 15s
-      retries: 15
-      interval: 5s
-      timeout: 3s
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
 
   master:
     build: .
@@ -19,7 +19,7 @@ services:
     command: --mongodb.host=${MONGO_NAME}
     depends_on:
       mongo:
-        condition: service_started
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       start_period: 15s
