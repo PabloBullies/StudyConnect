@@ -33,7 +33,7 @@ pipeline {
 
         stage('SonarQube analysis') {
             when {
-                expression { parameters.sonar }
+                expression { params.sonar }
             }
             steps {
                 withSonarQubeEnv('sonar-master') {
