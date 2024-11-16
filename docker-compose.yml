@@ -6,6 +6,12 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: username
       MONGO_INITDB_ROOT_PASSWORD: password
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      start_period: 15s
+      retries: 15
+      interval: 5s
+      timeout: 3s
 
   master:
     build: .
