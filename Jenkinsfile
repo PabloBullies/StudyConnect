@@ -14,9 +14,9 @@ pipeline {
     }
 
     environment {
-        MONGO_NAME = "mongo-${env.BUILD_TAG.split('-')[-1]}".toLowerCase()
-        MASTER_NAME = "master-${env.BUILD_TAG.split('-')[-1]}".toLowerCase()
-        TESTS_NAME = "tests-${env.BUILD_TAG.split('-')[-1]}".toLowerCase()
+        MONGO_NAME = "mongo-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
+        MASTER_NAME = "master-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
+        TESTS_NAME = "tests-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
         COMPOSE_PROJECT_NAME = "${env.BUILD_TAG}".toLowerCase()
     }
 
