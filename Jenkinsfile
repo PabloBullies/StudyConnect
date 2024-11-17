@@ -24,9 +24,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh './gradlew --no-daemon clean'
-                    sh './gradlew --no-daemon build'
-                    sh './gradlew --no-daemon testJar'
+                    sh 'gradle --no-daemon clean'
+                    sh 'gradle --no-daemon build'
+                    sh 'gradle --no-daemon testJar'
                 }
             }
         }
