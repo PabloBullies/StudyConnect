@@ -1,6 +1,6 @@
 package pb.studyconnect.server.service.matches;
 
-public interface MatchService {
+public interface MatchingService {
 
     void matchMentor(String studentId, String mentorId);
 }
