@@ -1,4 +1,4 @@
-package pb.studyconnect.server.service.matches.mentors.implement;
+package pb.studyconnect.server.service.matches.implement;
 
 
 import lombok.RequiredArgsConstructor;
@@ -9,11 +9,11 @@ import pb.studyconnect.server.model.Match;
 import pb.studyconnect.server.repository.MatchRepository;
 import pb.studyconnect.server.repository.MentorRepository;
 import pb.studyconnect.server.repository.StudentRepository;
-import pb.studyconnect.server.service.matches.mentors.MatchMentorService;
+import pb.studyconnect.server.service.matches.MatchService;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultMatchMentorService implements MatchMentorService {
+public class DefaultMatchService implements MatchService {
 
     private final StudentRepository studentRepository;
 
@@ -22,7 +22,7 @@ public class DefaultMatchMentorService implements MatchMentorService {
     private final MatchRepository matchRepository;
 
     @Override
-    public void match(String studentId, String mentorId) {
+    public void matchMentor(String studentId, String mentorId) {
         studentRepository.findById(studentId).orElseThrow(
                 () -> new PabloBullersException(
                         HttpStatus.NOT_FOUND,

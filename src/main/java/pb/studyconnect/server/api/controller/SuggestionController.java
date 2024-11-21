@@ -4,12 +4,7 @@ package pb.studyconnect.server.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pb.studyconnect.server.api.dto.response.MentorResponse;
-import pb.studyconnect.server.api.dto.response.SuggestMentorResponse;
-import pb.studyconnect.server.model.DiplomaTopic;
-import pb.studyconnect.server.service.suggestions.mentors.SuggestMentorService;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import pb.studyconnect.server.service.suggestions.SuggestionService;
 
 import static pb.studyconnect.server.api.path.ApiPaths.*;
 
@@ -18,10 +13,10 @@ import static pb.studyconnect.server.api.path.ApiPaths.*;
 @RequiredArgsConstructor
 public class SuggestionController {
 
-    private final SuggestMentorService suggestMentorService;
+    private final SuggestionService suggestionService;
 
-    @GetMapping(MENTORS+"/{studentId}")
-    public MentorResponse suggestMentor(@PathVariable String studentId, @RequestParam Integer offset) {
-        return suggestMentorService.suggest(studentId, offset);
+    @GetMapping("/{studentId}" + MENTORS)
+    public MentorResponse suggestMentor(@PathVariable String studentId, @RequestParam Integer skip) {
+        return suggestionService.suggestMentor(studentId, skip);
     }
 }
