@@ -1,14 +1,19 @@
 package pb.studyconnect.server.util.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import pb.studyconnect.server.api.dto.request.MentorRequest;
+import pb.studyconnect.server.api.dto.response.DiplomaTopicResponse;
 import pb.studyconnect.server.api.dto.response.MentorResponse;
 import pb.studyconnect.server.model.Mentor;
+
+import java.util.List;
 
 @Mapper
 public interface MentorMapper {
 
     Mentor mapToMentor(MentorRequest request);
 
-    MentorResponse mapToMentorResponse(Mentor mentor);
+    @Mapping(target = "diplomaTopics", source = "diplomaTopics")
+    MentorResponse mapToMentorResponse(Mentor mentor, List<DiplomaTopicResponse> diplomaTopics);
 }

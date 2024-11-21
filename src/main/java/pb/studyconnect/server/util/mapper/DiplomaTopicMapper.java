@@ -9,7 +9,7 @@ import pb.studyconnect.server.model.DiplomaTopic;
 @Mapper
 public interface DiplomaTopicMapper {
 
-    DiplomaTopic mapToDiplomaTopic(DiplomaTopicRequest request, String mentorId);
+    DiplomaTopic mapToDiplomaTopic(DiplomaTopicRequest request);
 
     DiplomaTopicResponse mapToDiplomaTopicResponse(DiplomaTopic diplomaTopic);
 }
