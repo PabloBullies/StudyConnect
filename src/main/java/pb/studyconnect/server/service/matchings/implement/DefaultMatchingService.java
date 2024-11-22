@@ -1,4 +1,4 @@
-package pb.studyconnect.server.service.matches.implement;
+package pb.studyconnect.server.service.matchings.implement;
 
 
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import pb.studyconnect.server.model.Matching;
 import pb.studyconnect.server.repository.MatchingRepository;
 import pb.studyconnect.server.repository.MentorRepository;
 import pb.studyconnect.server.repository.StudentRepository;
-import pb.studyconnect.server.service.matches.MatchingService;
+import pb.studyconnect.server.service.matchings.MatchingService;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +37,8 @@ public class DefaultMatchingService implements MatchingService {
                 )
         );
 
-        var matchDb = matchingRepository.findFirstByMentorIdAndStudentId(mentorId, studentId);
-        if (matchDb.isPresent()) {
+        var matchingDb = matchingRepository.findFirstByMentorIdAndStudentId(mentorId, studentId);
+        if (matchingDb.isPresent()) {
             return;
         }
 
@@ -48,5 +48,32 @@ public class DefaultMatchingService implements MatchingService {
         matching.setIsApprove(false);
 
         matchingRepository.save(matching);
+    }
+
+    @Override
+    public void matchStudent(String studentId, String mentorId, Boolean isApprove) {
+        studentRepository.findById(studentId).orElseThrow(
+                () -> new PabloBullersException(
+                        HttpStatus.NOT_FOUND,
+                        "Not found student with id: '" + studentId + "'"
+                )
+        );
+
+        mentorRepository.findById(mentorId).orElseThrow(
+                () -> new PabloBullersException(
+                        HttpStatus.NOT_FOUND,
+                        "Not found student with id: '" + studentId + "'"
+                )
+        );
+
+        var matchingDb = matchingRepository.findFirstByMentorIdAndStudentId(mentorId, studentId).orElseThrow(
+                () -> new PabloBullersException(
+                        HttpStatus.NOT_FOUND,
+                        "Not found matching with student id '" + studentId + "' and mentor id '" + mentorId + "'"
+                )
+        );
+
+        matchingDb.setIsApprove(isApprove);
+        matchingRepository.save(matchingDb);
     }
 }
