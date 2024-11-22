@@ -25,7 +25,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo "${scm.branches[0].name}"
+                    sh 'rm -rf .gradle'
                     sh 'gradle clean'
                     sh 'gradle build'
                     sh 'gradle testJar'
