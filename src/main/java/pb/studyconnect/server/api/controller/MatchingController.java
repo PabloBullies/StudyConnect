@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pb.studyconnect.server.service.matches.MatchingService;
 
@@ -23,8 +24,12 @@ public class MatchingController {
         matchingService.matchMentor(studentId, mentorId);
     }
 
-    @PostMapping("/{mentorId}" + STUDENTS + "/{studentId}")
-    public void matchStudent(@PathVariable String studentId, @PathVariable String mentorId) {
+    @PostMapping("/{mentorId}" + STUDENTS + "/{studentId}" + "/")
+    public void matchStudent(
+            @PathVariable String studentId,
+            @PathVariable String mentorId,
+            @RequestParam Boolean isApprove
+    ) {
 
     }
 }
