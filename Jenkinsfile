@@ -14,7 +14,7 @@ pipeline {
     }
 
     environment {
-        BRANCH_NAME = "${scm.branches[0].name}"
+        BRANCH_NAME = "${env.CHANGE_BRANCH == null ? env.BRANCH_NAME : env.CHANGE_BRANCH}"
         MONGO_NAME = "mongo-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
         MASTER_NAME = "master-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
         TESTS_NAME = "tests-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
