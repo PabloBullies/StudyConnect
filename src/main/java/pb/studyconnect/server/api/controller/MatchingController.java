@@ -9,6 +9,7 @@ import pb.studyconnect.server.service.matches.MatchingService;
 
 import static pb.studyconnect.server.api.path.ApiPaths.MATCHES;
 import static pb.studyconnect.server.api.path.ApiPaths.MENTORS;
+import static pb.studyconnect.server.api.path.ApiPaths.STUDENTS;
 
 @RestController
 @RequestMapping(MATCHES)
@@ -20,6 +21,11 @@ public class MatchingController {
     @PostMapping("/{studentId}"+ MENTORS + "/{mentorId}")
     public void matchMentor(@PathVariable String studentId, @PathVariable String mentorId) {
         matchingService.matchMentor(studentId, mentorId);
+    }
+
+    @PostMapping("/{mentorId}" + STUDENTS + "/{studentId}")
+    public void matchStudent(@PathVariable String studentId, @PathVariable String mentorId) {
+
     }
 }
 
