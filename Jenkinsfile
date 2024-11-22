@@ -14,7 +14,7 @@ pipeline {
     }
 
     environment {
-        BRANCH_NAME = scm.branches[0].name
+        BRANCH_NAME = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
         MONGO_NAME = "mongo-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
         MASTER_NAME = "master-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
         TESTS_NAME = "tests-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
@@ -25,7 +25,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo "$BRANCH_NAME"
+                    echo "${scm.branches[0].name}"
                     sh 'gradle clean'
                     sh 'gradle build'
                     sh 'gradle testJar'
