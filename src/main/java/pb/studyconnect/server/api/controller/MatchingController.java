@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pb.studyconnect.server.service.matches.MatchingService;
+import pb.studyconnect.server.service.matchings.MatchingService;
 
 import static pb.studyconnect.server.api.path.ApiPaths.MATCHES;
 import static pb.studyconnect.server.api.path.ApiPaths.MENTORS;
@@ -30,7 +30,7 @@ public class MatchingController {
             @PathVariable String mentorId,
             @RequestParam Boolean isApprove
     ) {
-
+        matchingService.matchStudent(studentId, mentorId, isApprove);
     }
 }
 
