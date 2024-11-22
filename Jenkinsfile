@@ -60,8 +60,11 @@ pipeline {
         stage('Push to nexus') {
             steps {
                 script {
-                    docker.withRegistry('https://owa.gigachadus.ru', 'nexus-creds') {
-                        docker.build('study-master').push(BRANCH_NAME)
+                    withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "docker login -u $USERNAME -p $PASSWORD owa.gigachadus.ru"
+                        sh "docker build . -t owa.gigachadus.ru/study-master:${env.BRANCH_NAME}"
+                        sh "docker push owa.gigachadus.ru/study-master:${env.BRANCH_NAME}"
+                        sh "docker image rm owa.gigachadus.ru/study-master:${env.BRANCH_NAME}"
                     }
                 }
             }
@@ -74,9 +77,10 @@ pipeline {
 
             steps {
                 script {
+                    sh 'docker build . -t study-master'
                     sh 'docker rm -f study-master-prod || true'
                     withCredentials([usernamePassword(credentialsId: 'mongo-prod-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "docker run --restart always --name study-master-prod --network master-prod-network -p 8100:8080 -d owa.gigachadus.ru/study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
+                        sh "docker run --restart always --name study-master-prod --network master-prod-network -p 8100:8080 -d study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
                     }
                 }
             }
