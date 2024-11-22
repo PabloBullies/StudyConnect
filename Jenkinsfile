@@ -58,8 +58,10 @@ pipeline {
 
         stage('Push to nexus') {
             steps {
-                docker.withRegistry('https://owa.gigachadus.ru', 'nexus-creds') {
-                    docker.build('study-master').push(BRANCH_NAME)
+                script {
+                    docker.withRegistry('https://owa.gigachadus.ru', 'nexus-creds') {
+                        docker.build('study-master').push(BRANCH_NAME)
+                    }
                 }
             }
         }
