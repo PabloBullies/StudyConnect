@@ -14,6 +14,7 @@ pipeline {
     }
 
     environment {
+        BRANCH_NAME = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
         MONGO_NAME = "mongo-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
         MASTER_NAME = "master-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
         TESTS_NAME = "tests-${env.BUILD_TAG.split('-')[-2] + env.BUILD_TAG.split('-')[-1]}".toLowerCase()
@@ -55,6 +56,14 @@ pipeline {
             }
         }
 
+        stage('Push to nexus') {
+            steps {
+                docker.withRegistry('https://owa.gigachadus.ru', 'nexus-creds') {
+                    docker.build('study-master').push(BRANCH_NAME)
+                }
+            }
+        }
+
         stage('Deploy') {
             when {
                 branch 'main'
@@ -62,10 +71,9 @@ pipeline {
 
             steps {
                 script {
-                    sh 'docker build . -t study-master'
                     sh 'docker rm -f study-master-prod || true'
                     withCredentials([usernamePassword(credentialsId: 'mongo-prod-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "docker run --restart always --name study-master-prod --network master-prod-network -p 8100:8080 -d study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
+                        sh "docker run --restart always --name study-master-prod --network master-prod-network -p 8100:8080 -d owa.gigachadus.ru/study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
                     }
                 }
             }
