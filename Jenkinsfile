@@ -25,6 +25,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    checkout scm
                     sh 'gradle clean'
                     sh 'gradle build'
                     sh 'gradle testJar'
