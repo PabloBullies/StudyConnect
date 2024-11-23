@@ -69,6 +69,8 @@ pipeline {
                         sh "docker login -u $USERNAME -p $PASSWORD owa.gigachadus.ru"
                         sh "docker build . -t owa.gigachadus.ru/study-master:${env.TIMESTAMP}"
                         sh "docker push owa.gigachadus.ru/study-master:${env.TIMESTAMP}"
+                        sh "docker tag owa.gigachadus.ru/study-master:${env.TIMESTAMP} owa.gigachadus.ru/study-master:latest"
+                        sh "docker push owa.gigachadus.ru/study-master:latest"
                         sh "docker image rm owa.gigachadus.ru/study-master:${env.TIMESTAMP}"
                     }
                 }
@@ -83,11 +85,8 @@ pipeline {
             steps {
                 script {
                     sh 'docker rm -f study-master-prod || true'
-                    sh 'docker image rm study-master || true'
-                    sh "docker tag owa.gigachadus.ru/study-master:${env.TIMESTAMP} study-master"
-
                     withCredentials([usernamePassword(credentialsId: 'mongo-prod-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "docker run --restart always --name study-master-prod --network master-prod-network -p 8100:8080 -d study-master --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
+                        sh "docker run --restart always --name study-master-prod --network master-prod-network -p 8100:8080 -d owa.gigachadus.ru/study-master:latest --spring.profiles.active=prod --mongodb.username=$USERNAME --mongodb.password=$PASSWORD"
                     }
                 }
             }
