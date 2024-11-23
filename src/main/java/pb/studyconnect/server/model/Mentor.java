@@ -22,8 +22,7 @@ public class Mentor {
 
     List<String> scientificInterests;
 
-    @DBRef
-    List<DiplomaTopic> diplomaTopics;
+    List<String> diplomaTopicIds;
 
     String department;
 }
