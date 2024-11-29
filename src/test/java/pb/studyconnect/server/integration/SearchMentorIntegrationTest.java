@@ -55,10 +55,10 @@ public class SearchMentorIntegrationTest {
         Assertions.assertEquals(200, response.statusCode());
         Assertions.assertNotEquals(null, response.jsonPath().getString("id"));
         String mentor_id = response.jsonPath().getString("id");
-
+        System.out.println(id);
         response = given().header("Content-Type", "application/json")
                 .when()
-                .get("/suggest/mentors/" + id)
+                .get("/suggest/"+id+"/mentors?skip=0")
                 .then()
                 .extract().response();
 
