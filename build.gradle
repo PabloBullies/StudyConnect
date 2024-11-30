@@ -82,3 +82,9 @@ tasks.register('itestJar', Jar) {
     from sourceSets.itest.output
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
