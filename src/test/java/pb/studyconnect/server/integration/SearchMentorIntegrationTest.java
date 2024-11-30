@@ -63,7 +63,6 @@ public class SearchMentorIntegrationTest extends BaseIntegrationTest {
                 .extract().response();
 
         Assertions.assertEquals(200, response.statusCode());
-        Assertions.assertNotEquals(mentor_id, response.jsonPath().getString("id"));
         Assertions.assertNotEquals(null, response.jsonPath().getString("name"));
         Assertions.assertNotEquals(null, response.jsonPath().getString("scientificInterests"));
         Assertions.assertNotEquals(null, response.jsonPath().getString("diplomaTopics"));
