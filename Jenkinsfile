@@ -29,7 +29,7 @@ pipeline {
                     sh 'rm -rf .gradle'
                     sh 'gradle clean'
                     sh 'gradle build'
-                    sh 'gradle testJar'
+                    sh 'gradle itestJar'
                 }
             }
         }
