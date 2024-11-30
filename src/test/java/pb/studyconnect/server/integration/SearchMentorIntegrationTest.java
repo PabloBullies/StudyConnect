@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class SearchMentorIntegrationTest {
+public class SearchMentorIntegrationTest extends BaseIntegrationTest {
     @Test
     public void searchMentor() {
         Response response = given().header("Content-Type", "application/json")
