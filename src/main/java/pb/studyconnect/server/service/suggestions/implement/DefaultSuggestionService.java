@@ -12,7 +12,6 @@ import pb.studyconnect.server.api.dto.response.MentorResponse;
 import pb.studyconnect.server.exception.PabloBullersException;
 import pb.studyconnect.server.model.Mentor;
 import pb.studyconnect.server.repository.DiplomaTopicRepository;
-import pb.studyconnect.server.repository.MentorRepository;
 import pb.studyconnect.server.repository.StudentRepository;
 import pb.studyconnect.server.service.suggestions.SuggestionService;
 import pb.studyconnect.server.util.mapper.DiplomaTopicMapper;
@@ -21,13 +20,10 @@ import pb.studyconnect.server.util.mapper.MentorMapper;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.lookup;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.replaceRoot;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.unwind;
 
 @Service
 @RequiredArgsConstructor
