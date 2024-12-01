@@ -90,5 +90,9 @@ pipeline {
         always {
             sh 'docker compose down --rmi local'
         }
+
+        failure {
+            sh 'rm -rf /var/lib/jenkins/.gradle'
+        }
     }
 }
