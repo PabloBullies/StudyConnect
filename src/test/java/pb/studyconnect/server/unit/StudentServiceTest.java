@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class StudentServiceTest {
+class StudentServiceTest {
 
     @Autowired
     private StudentService studentService;
@@ -32,14 +32,14 @@ public class StudentServiceTest {
 
 
     @Test
-    public void studentCreateTest() {
+    void studentCreateTest() {
         StudentRequest studentRequest = StudentRequestStub.getBaseStudent();
         studentService.create(studentRequest);
         Mockito.verify(studentRepository, Mockito.times(1)).save(studentMapper.mapToStudent(studentRequest));
     }
 
     @Test
-    public void studentEditTest() {
+    void studentEditTest() {
         StudentRequest studentRequest = StudentRequestStub.getBaseStudent();
         Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
         studentService.edit("aboba", studentRequest);
@@ -47,7 +47,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void studentGetTest() {
+    void studentGetTest() {
         StudentRequest studentRequest = StudentRequestStub.getBaseStudent();
         Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
         StudentResponse resp = studentService.get("aboba");
@@ -55,7 +55,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void studentDeleteTest() {
+    void studentDeleteTest() {
         StudentRequest studentRequest = StudentRequestStub.getBaseStudent();
         Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
         studentService.delete("aboba");

@@ -21,7 +21,7 @@ public record MentorRequest(
         @Pattern(regexp = "^[A-Za-z0-9.]+@[A-Za-z0-9.]+\\.[A-Za-z0-9.]+$", message = EMAIL_IS_NOT_IN_FORMAT)
         String email,
 
-        @Pattern(regexp = "^@[A-Za-z0-9_]+$", message = TG_NICKNAME_IS_NOT_IN_FORMAT)
+        @Pattern(regexp = "^@\\w+$", message = TG_NICKNAME_IS_NOT_IN_FORMAT)
         @Size(min = 6, message = TG_NICKNAME_MINIMUM_LENGTH)
         String tgNickname,
 
