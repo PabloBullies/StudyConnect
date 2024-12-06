@@ -13,7 +13,7 @@ import static pb.studyconnect.server.util.Messages.SCIENTIFIC_INTERESTS_MINIMUM_
 import static pb.studyconnect.server.util.Messages.TG_NICKNAME_IS_NOT_IN_FORMAT;
 import static pb.studyconnect.server.util.Messages.TG_NICKNAME_MINIMUM_LENGTH;
 
-public record StudentRequest(
+public record  StudentRequest(
 
         @NotBlank(message = NAME_MUST_NOT_BE_EMPTY)
         String name,
@@ -35,6 +35,7 @@ public record StudentRequest(
 
         @Nullable
         String initiativeTheme
+
 ) {
 
 }
