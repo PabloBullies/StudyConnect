@@ -9,10 +9,6 @@ pipeline {
         ansiColor('xterm')
     }
 
-    parameters {
-        booleanParam(defaultValue: false, name: 'sonar')
-    }
-
     environment {
         BRANCH_NAME = "${env.CHANGE_BRANCH == null ? env.BRANCH_NAME : env.CHANGE_BRANCH}"
         TIMESTAMP = sh(returnStdout: true, script: 'date +%Y.%m.%d-%k.%M.%S').trim()
@@ -29,18 +25,15 @@ pipeline {
                     sh 'rm -rf .gradle'
                     sh 'gradle clean'
                     sh 'gradle build'
-                    sh 'gradle testJar'
+                    sh 'gradle itestJar'
                 }
             }
         }
 
         stage('SonarQube analysis') {
-            when {
-                expression { params.sonar }
-            }
             steps {
                 withSonarQubeEnv('sonar-master') {
-                    sh './gradlew sonar'
+                    sh 'gradle sonar'
                 }
             }
         }
@@ -96,6 +89,10 @@ pipeline {
     post {
         always {
             sh 'docker compose down --rmi local'
+        }
+
+        failure {
+            sh 'rm -rf /var/lib/jenkins/.gradle'
         }
     }
 }

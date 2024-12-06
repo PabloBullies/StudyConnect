@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pb.studyconnect.server.api.dto.request.MentorRequest;
 import pb.studyconnect.server.api.dto.request.StudentRequest;
-import pb.studyconnect.server.api.dto.response.MentorResponse;
 import pb.studyconnect.server.api.dto.response.StudentResponse;
 import pb.studyconnect.server.service.students.StudentService;
 
-import static pb.studyconnect.server.api.path.ApiPaths.MENTORS;
 import static pb.studyconnect.server.api.path.ApiPaths.PROFILES;
 import static pb.studyconnect.server.api.path.ApiPaths.STUDENTS;
 

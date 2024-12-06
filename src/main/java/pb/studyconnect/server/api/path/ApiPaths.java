@@ -1,5 +1,8 @@
 package pb.studyconnect.server.api.path;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public final class ApiPaths {
     public static final String PROFILES = "/profiles";
 

@@ -4,22 +4,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pb.studyconnect.server.api.dto.request.DiplomaTopicRequest;
 import pb.studyconnect.server.api.dto.request.MentorRequest;
-import pb.studyconnect.server.api.dto.response.DiplomaTopicResponse;
 import pb.studyconnect.server.api.dto.response.MentorResponse;
 import pb.studyconnect.server.service.mentors.MentorService;
 
-import java.util.List;
-
-import static pb.studyconnect.server.api.path.ApiPaths.DIPLOMA_TOPICS;
 import static pb.studyconnect.server.api.path.ApiPaths.MENTORS;
 import static pb.studyconnect.server.api.path.ApiPaths.PROFILES;
 

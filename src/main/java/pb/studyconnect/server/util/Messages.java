@@ -1,5 +1,8 @@
 package pb.studyconnect.server.util;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public final class Messages {
 
     public static final String NAME_MUST_NOT_BE_EMPTY = "Name must not be empty";
