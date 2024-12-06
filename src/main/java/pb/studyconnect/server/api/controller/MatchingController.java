@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pb.studyconnect.server.api.dto.response.MentorResponse;
+import pb.studyconnect.server.api.dto.response.MentorResponseWithIsApprove;
 import pb.studyconnect.server.api.dto.response.StudentResponse;
+import pb.studyconnect.server.api.dto.response.StudentResponseWithIsApprove;
 import pb.studyconnect.server.service.matchings.MatchingService;
 
 import java.util.List;
@@ -39,12 +41,12 @@ public class MatchingController {
     }
 
     @GetMapping("/{studentId}" + MENTORS)
-    public List<MentorResponse> getMatchingMentors(@PathVariable String studentId) {
+    public List<MentorResponseWithIsApprove> getMatchingMentors(@PathVariable String studentId) {
         return null;
     }
 
     @GetMapping("/{mentorId}" + STUDENTS)
-    public List<StudentResponse> getMatchingStudents(@PathVariable String mentorId) {
+    public List<StudentResponseWithIsApprove> getMatchingStudents(@PathVariable String mentorId) {
         return null;
     }
 }
