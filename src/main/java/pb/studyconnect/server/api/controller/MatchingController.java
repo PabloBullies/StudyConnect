@@ -42,12 +42,12 @@ public class MatchingController {
 
     @GetMapping("/{studentId}" + MENTORS)
     public List<MentorResponseWithIsApprove> getMatchingMentors(@PathVariable String studentId) {
-        return null;
+        return matchingService.getMatchingMentors(studentId);
     }
 
     @GetMapping("/{mentorId}" + STUDENTS)
     public List<StudentResponseWithIsApprove> getMatchingStudents(@PathVariable String mentorId) {
-        return null;
+        return matchingService.getMatchingStudents(mentorId);
     }
 }
 
