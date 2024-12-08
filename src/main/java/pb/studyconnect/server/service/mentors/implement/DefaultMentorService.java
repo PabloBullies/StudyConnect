@@ -15,8 +15,6 @@ import pb.studyconnect.server.service.mentors.MentorService;
 import pb.studyconnect.server.util.mapper.DiplomaTopicMapper;
 import pb.studyconnect.server.util.mapper.MentorMapper;
 
-import java.util.ArrayList;
-
 
 @Service
 @RequiredArgsConstructor
