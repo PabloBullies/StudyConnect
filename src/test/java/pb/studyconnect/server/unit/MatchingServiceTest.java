@@ -29,11 +29,14 @@ import pb.studyconnect.server.util.mapper.MentorMapperImpl;
 import pb.studyconnect.server.util.mapper.StudentMapper;
 import pb.studyconnect.server.util.mapper.StudentMapperImpl;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.mock;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_MATCHING_WITH_STUDENT_ID_AND_MENTOR_ID;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -68,8 +71,8 @@ class MatchingServiceTest {
 
     @Test
     void matchMentorWithSuccess() {
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(mock());
-        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(mock());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(true);
+        Mockito.when(mentorRepository.existsById(mentorId)).thenReturn(true);
         Matching matching = MatchingStub.getBaseMatching(studentId, mentorId, false);
 
         Mockito.when(matchingRepository.findFirstByMentorIdAndStudentId(mentorId, studentId))
@@ -80,31 +83,35 @@ class MatchingServiceTest {
 
     @Test
     void matchMentorWithStudentNotFound() {
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(false);
         assertThatExceptionOfType(PabloBullersException.class)
                 .isThrownBy(() -> matchingService.matchMentor(studentId, mentorId))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found student with id: '" + studentId + "'")
+                                && actual.getMessage().equals(
+                                        MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+                        )
                 );
     }
 
     @Test
     void matchMentorWithMentorNotFound() {
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(mock());
-        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(true);
+        Mockito.when(mentorRepository.existsById(mentorId)).thenReturn(false);
         assertThatExceptionOfType(PabloBullersException.class)
                 .isThrownBy(() -> matchingService.matchMentor(studentId, mentorId))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found mentor with id: '" + mentorId + "'")
+                                && actual.getMessage().equals(
+                                        MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+                        )
                 );
     }
 
     @Test
     void matchStudentWithSuccess() {
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(mock());
-        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(mock());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(true);
+        Mockito.when(mentorRepository.existsById(mentorId)).thenReturn(true);
         Matching matching = MatchingStub.getBaseMatching(studentId, mentorId, true);
 
         Mockito.when(matchingRepository.findFirstByMentorIdAndStudentId(mentorId, studentId))
@@ -116,31 +123,35 @@ class MatchingServiceTest {
 
     @Test
     void matchStudentWithStudentNotFound() {
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(false);
         assertThatExceptionOfType(PabloBullersException.class)
                 .isThrownBy(() -> matchingService.matchStudent(studentId, mentorId, true))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found student with id: '" + studentId + "'")
+                                && actual.getMessage().equals(
+                                        MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+                        )
                 );
     }
 
     @Test
     void matchStudentWithMentorNotFound() {
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(mock());
-        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(true);
+        Mockito.when(mentorRepository.existsById(mentorId)).thenReturn(false);
         assertThatExceptionOfType(PabloBullersException.class)
                 .isThrownBy(() -> matchingService.matchStudent(studentId, mentorId, true))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found mentor with id: '" + mentorId + "'")
+                                && actual.getMessage().equals(
+                                        MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+                        )
                 );
     }
 
     @Test
     void matchStudentWithMatchingNotFound() {
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(mock());
-        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(mock());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(true);
+        Mockito.when(mentorRepository.existsById(mentorId)).thenReturn(true);
         Mockito.when(matchingRepository.findFirstByMentorIdAndStudentId(mentorId, studentId))
                 .thenReturn(Optional.empty());
         assertThatExceptionOfType(PabloBullersException.class)
@@ -148,8 +159,11 @@ class MatchingServiceTest {
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
                                 && actual.getMessage().equals(
-                                        "Not found matching with student id '" + studentId + "' " +
-                                        "and mentor id '" + mentorId + "'"
+                                        MessageFormat.format(
+                                                NOT_FOUND_MATCHING_WITH_STUDENT_ID_AND_MENTOR_ID,
+                                                studentId,
+                                                mentorId
+                                        )
                         )
                 );
     }
@@ -160,11 +174,11 @@ class MatchingServiceTest {
         Matching matching1 = MatchingStub.getBaseMatching(studentId, mentorId, true);
         Matching matching2 = MatchingStub.getBaseMatching(studentId, mentorId2, true);
 
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(mock());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(true);
 
         Mockito.when(matchingRepository.findAllByStudentId(studentId)).thenReturn(List.of(matching1, matching2));
 
-        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
+        Mockito.when(mentorRepository.existsById(mentorId)).thenReturn(false);
 
         MentorRequest mentorRequest = MentorStub.getBaseMentorRequest();
         var diplomaTopics = mentorRequest.diplomaTopics()
@@ -191,12 +205,14 @@ class MatchingServiceTest {
 
     @Test
     void getMatchingMentorsWithStudentNotFound() {
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(false);
         assertThatExceptionOfType(PabloBullersException.class)
                 .isThrownBy(() -> matchingService.getMatchingMentors(studentId))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found student with id: '" + studentId + "'")
+                                && actual.getMessage().equals(
+                                        MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+                        )
                 );
     }
 
@@ -207,11 +223,11 @@ class MatchingServiceTest {
         Matching matching1 = MatchingStub.getBaseMatching(studentId, mentorId, true);
         Matching matching2 = MatchingStub.getBaseMatching(studentId2, mentorId, true);
 
-        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(mock());
+        Mockito.when(mentorRepository.existsById(mentorId)).thenReturn(true);
 
         Mockito.when(matchingRepository.findAllByMentorId(mentorId)).thenReturn(List.of(matching1, matching2));
 
-        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.existsById(studentId)).thenReturn(false);
 
         StudentRequest studentRequest = StudentStub.getBaseStudentRequest();
 
@@ -231,12 +247,14 @@ class MatchingServiceTest {
 
     @Test
     void getMatchingStudentsWithMentorNotFound() {
-        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
+        Mockito.when(mentorRepository.existsById(mentorId)).thenReturn(false);
         assertThatExceptionOfType(PabloBullersException.class)
                 .isThrownBy(() -> matchingService.getMatchingStudents(mentorId))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found mentor with id: '" + mentorId + "'")
+                                && actual.getMessage().equals(
+                                        MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+                        )
                 );
     }
 

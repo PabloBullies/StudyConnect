@@ -17,6 +17,7 @@ import pb.studyconnect.server.service.suggestions.SuggestionService;
 import pb.studyconnect.server.util.mapper.DiplomaTopicMapper;
 import pb.studyconnect.server.util.mapper.MentorMapper;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
@@ -24,6 +25,8 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.matc
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +48,7 @@ public class DefaultSuggestionService implements SuggestionService {
                 .orElseThrow(
                         () -> new PabloBullersException(
                                 HttpStatus.NOT_FOUND,
-                                "Not found student with id: '" + studentId + "'"
+                                MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
                         )
                 );
 

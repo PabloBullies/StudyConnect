@@ -30,6 +30,7 @@ import pb.studyconnect.server.util.mapper.MentorMapper;
 import pb.studyconnect.server.util.mapper.MentorMapperImpl;
 import pb.studyconnect.server.util.mapper.StudentMapper;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +38,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.argThat;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -63,10 +66,12 @@ class SuggestionServiceTest {
     @InjectMocks
     private DefaultSuggestionService suggestionService;
 
+    private final String studentId = "aboba";
+
     @Test
     void suggestMentorWithSuccessTest() {
         StudentRequest studentRequest = StudentStub.getBaseStudentRequest();
-        Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
 
         AggregationResults<Document> mockTopicResults = Mockito.mock(AggregationResults.class);
         Document doc1 = new Document("_id", "doc1");
@@ -104,7 +109,7 @@ class SuggestionServiceTest {
 
         Mockito.when(diplomaTopicRepository.findAllById(mentor.getDiplomaTopicIds())).thenReturn(diplomaTopics);
 
-        var actual = suggestionService.suggestMentor("aboba", 0);
+        var actual = suggestionService.suggestMentor(studentId, 0);
 
         Mockito.verify(diplomaTopicRepository).findAllById(mentor.getDiplomaTopicIds());
         Assertions.assertEquals(MentorStub.getBaseMentorResponse(), actual);
@@ -112,12 +117,14 @@ class SuggestionServiceTest {
 
     @Test
     void suggestMentorWithStudentNotFoundTest() {
-        Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(PabloBullersException.class)
-                .isThrownBy(() -> suggestionService.suggestMentor("aboba", 0))
+                .isThrownBy(() -> suggestionService.suggestMentor(studentId, 0))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found student with id: 'aboba'")
+                                && actual.getMessage().equals(
+                                MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+                        )
                 );
     }
 

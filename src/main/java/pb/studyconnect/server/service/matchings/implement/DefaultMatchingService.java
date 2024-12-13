@@ -20,10 +20,15 @@ import pb.studyconnect.server.util.mapper.DiplomaTopicMapper;
 import pb.studyconnect.server.util.mapper.MentorMapper;
 import pb.studyconnect.server.util.mapper.StudentMapper;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_MATCHING_WITH_STUDENT_ID_AND_MENTOR_ID;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,19 +50,20 @@ public class DefaultMatchingService implements MatchingService {
 
     @Override
     public void matchMentor(String studentId, String mentorId) {
-        studentRepository.findById(studentId).orElseThrow(
-                () -> new PabloBullersException(
-                        HttpStatus.NOT_FOUND,
-                        "Not found student with id: '" + studentId + "'"
-                )
-        );
+        if (!studentRepository.existsById(studentId)) {
+            throw new PabloBullersException(
+                    HttpStatus.NOT_FOUND,
+                    MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+            );
+        }
 
-        mentorRepository.findById(mentorId).orElseThrow(
-                () -> new PabloBullersException(
-                        HttpStatus.NOT_FOUND,
-                        "Not found mentor with id: '" + mentorId + "'"
-                )
-        );
+        if (!mentorRepository.existsById(mentorId)) {
+            throw new PabloBullersException(
+                    HttpStatus.NOT_FOUND,
+                    MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+
+            );
+        }
 
         var matchingDb = matchingRepository.findFirstByMentorIdAndStudentId(mentorId, studentId);
         if (matchingDb.isPresent()) {
@@ -74,24 +80,24 @@ public class DefaultMatchingService implements MatchingService {
 
     @Override
     public void matchStudent(String studentId, String mentorId, Boolean isApprove) {
-        studentRepository.findById(studentId).orElseThrow(
-                () -> new PabloBullersException(
-                        HttpStatus.NOT_FOUND,
-                        "Not found student with id: '" + studentId + "'"
-                )
-        );
+        if (!studentRepository.existsById(studentId)) {
+            throw new PabloBullersException(
+                    HttpStatus.NOT_FOUND,
+                    MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+            );
+        }
 
-        mentorRepository.findById(mentorId).orElseThrow(
-                () -> new PabloBullersException(
-                        HttpStatus.NOT_FOUND,
-                        "Not found mentor with id: '" + mentorId + "'"
-                )
-        );
+        if (!mentorRepository.existsById(mentorId)) {
+            throw new PabloBullersException(
+                    HttpStatus.NOT_FOUND,
+                    MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+            );
+        }
 
         var matchingDb = matchingRepository.findFirstByMentorIdAndStudentId(mentorId, studentId).orElseThrow(
                 () -> new PabloBullersException(
                         HttpStatus.NOT_FOUND,
-                        "Not found matching with student id '" + studentId + "' and mentor id '" + mentorId + "'"
+                        MessageFormat.format(NOT_FOUND_MATCHING_WITH_STUDENT_ID_AND_MENTOR_ID, studentId, mentorId)
                 )
         );
 
@@ -101,12 +107,12 @@ public class DefaultMatchingService implements MatchingService {
 
     @Override
     public List<MentorResponseWithIsApprove> getMatchingMentors(String studentId) {
-        studentRepository.findById(studentId).orElseThrow(
-                () -> new PabloBullersException(
-                        HttpStatus.NOT_FOUND,
-                        "Not found student with id: '" + studentId + "'"
-                )
-        );
+        if (!studentRepository.existsById(studentId)) {
+            throw new PabloBullersException(
+                    HttpStatus.NOT_FOUND,
+                    MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+            );
+        }
 
         var matchings = matchingRepository.findAllByStudentId(studentId);
 
@@ -130,12 +136,12 @@ public class DefaultMatchingService implements MatchingService {
 
     @Override
     public List<StudentResponseWithIsApprove> getMatchingStudents(String mentorId) {
-        mentorRepository.findById(mentorId).orElseThrow(
-                () -> new PabloBullersException(
-                        HttpStatus.NOT_FOUND,
-                        "Not found mentor with id: '" + mentorId + "'"
-                )
-        );
+        if (!mentorRepository.existsById(mentorId)) {
+            throw new PabloBullersException(
+                    HttpStatus.NOT_FOUND,
+                    MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+            );
+        }
 
         var matchings = matchingRepository.findAllByMentorId(mentorId);
 
