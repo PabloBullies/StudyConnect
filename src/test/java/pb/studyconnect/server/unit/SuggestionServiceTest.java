@@ -38,7 +38,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.argThat;
-import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
 import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
 @ExtendWith(SpringExtension.class)
