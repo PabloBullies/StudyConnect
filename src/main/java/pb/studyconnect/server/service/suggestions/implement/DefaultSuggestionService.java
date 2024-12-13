@@ -89,7 +89,7 @@ public class DefaultSuggestionService implements SuggestionService {
         var diplomaTopics = diplomaTopicRepository.findAllById(mentor.getDiplomaTopicIds());
 
         return mentorMapper.mapToMentorResponse(
-                mentorResults.getMappedResults().getFirst(),
+                mentor,
                 diplomaTopics.stream().map(diplomaTopicMapper::mapToDiplomaTopicResponse).toList()
         );
     }

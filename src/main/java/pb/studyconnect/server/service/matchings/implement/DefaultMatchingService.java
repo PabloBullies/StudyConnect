@@ -55,7 +55,7 @@ public class DefaultMatchingService implements MatchingService {
         mentorRepository.findById(mentorId).orElseThrow(
                 () -> new PabloBullersException(
                         HttpStatus.NOT_FOUND,
-                        "Not found student with id: '" + studentId + "'"
+                        "Not found mentor with id: '" + mentorId + "'"
                 )
         );
 
@@ -84,7 +84,7 @@ public class DefaultMatchingService implements MatchingService {
         mentorRepository.findById(mentorId).orElseThrow(
                 () -> new PabloBullersException(
                         HttpStatus.NOT_FOUND,
-                        "Not found student with id: '" + studentId + "'"
+                        "Not found mentor with id: '" + mentorId + "'"
                 )
         );
 
@@ -101,6 +101,13 @@ public class DefaultMatchingService implements MatchingService {
 
     @Override
     public List<MentorResponseWithIsApprove> getMatchingMentors(String studentId) {
+        studentRepository.findById(studentId).orElseThrow(
+                () -> new PabloBullersException(
+                        HttpStatus.NOT_FOUND,
+                        "Not found student with id: '" + studentId + "'"
+                )
+        );
+
         var matchings = matchingRepository.findAllByStudentId(studentId);
 
         List<MentorResponseWithIsApprove> mentorResponses = new ArrayList<>();
@@ -123,6 +130,13 @@ public class DefaultMatchingService implements MatchingService {
 
     @Override
     public List<StudentResponseWithIsApprove> getMatchingStudents(String mentorId) {
+        mentorRepository.findById(mentorId).orElseThrow(
+                () -> new PabloBullersException(
+                        HttpStatus.NOT_FOUND,
+                        "Not found mentor with id: '" + mentorId + "'"
+                )
+        );
+
         var matchings = matchingRepository.findAllByMentorId(mentorId);
 
         List<StudentResponseWithIsApprove> studentResponses = new ArrayList<>();
