@@ -11,6 +11,10 @@ import pb.studyconnect.server.repository.StudentRepository;
 import pb.studyconnect.server.service.students.StudentService;
 import pb.studyconnect.server.util.mapper.StudentMapper;
 
+import java.text.MessageFormat;
+
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
+
 @Service
 @RequiredArgsConstructor
 public class DefaultStudentService implements StudentService {
@@ -32,7 +36,7 @@ public class DefaultStudentService implements StudentService {
                 .orElseThrow(
                         () -> new PabloBullersException(
                                 HttpStatus.NOT_FOUND,
-                                "Not found student with id: '" + studentId + "'"
+                                MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
                         )
                 );
 
@@ -53,7 +57,7 @@ public class DefaultStudentService implements StudentService {
                 .orElseThrow(
                         () -> new PabloBullersException(
                                 HttpStatus.NOT_FOUND,
-                                "Not found student with id: '" + studentId + "'"
+                                MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
                         )
                 );
         return studentMapper.mapToStudentResponse(student);
@@ -65,7 +69,7 @@ public class DefaultStudentService implements StudentService {
                 .orElseThrow(
                         () -> new PabloBullersException(
                                 HttpStatus.NOT_FOUND,
-                                "Not found student with id: '" + studentId + "'"
+                                MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
                         )
                 );
         studentRepository.delete(student);

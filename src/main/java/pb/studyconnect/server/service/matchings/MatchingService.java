@@ -1,8 +1,6 @@
 package pb.studyconnect.server.service.matchings;
 
-import pb.studyconnect.server.api.dto.response.MentorResponse;
 import pb.studyconnect.server.api.dto.response.MentorResponseWithIsApprove;
-import pb.studyconnect.server.api.dto.response.StudentResponse;
 import pb.studyconnect.server.api.dto.response.StudentResponseWithIsApprove;
 
 import java.util.List;

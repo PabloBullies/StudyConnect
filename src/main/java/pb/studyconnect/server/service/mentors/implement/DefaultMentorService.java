@@ -15,6 +15,11 @@ import pb.studyconnect.server.service.mentors.MentorService;
 import pb.studyconnect.server.util.mapper.DiplomaTopicMapper;
 import pb.studyconnect.server.util.mapper.MentorMapper;
 
+import java.text.MessageFormat;
+
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +58,7 @@ public class DefaultMentorService implements MentorService {
                 .orElseThrow(
                         () -> new PabloBullersException(
                                 HttpStatus.NOT_FOUND,
-                                "Not found mentor with id: '" + mentorId + "'"
+                                MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
                         )
                 );
 
@@ -84,7 +89,7 @@ public class DefaultMentorService implements MentorService {
                 .orElseThrow(
                         () -> new PabloBullersException(
                                 HttpStatus.NOT_FOUND,
-                                "Not found mentor with id: '" + mentorId + "'"
+                                MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
                         )
                 );
         var diplomaTopics = diplomaTopicRepository.findAllById(mentor.getDiplomaTopicIds());
@@ -101,7 +106,7 @@ public class DefaultMentorService implements MentorService {
                 .orElseThrow(
                         () -> new PabloBullersException(
                                 HttpStatus.NOT_FOUND,
-                                "Not found mentor with id: '" + mentorId + "'"
+                                MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
                         )
                 );
         if (mentor.getDiplomaTopicIds() != null) {

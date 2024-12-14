@@ -19,11 +19,13 @@ import pb.studyconnect.server.unit.stub.MentorStub;
 import pb.studyconnect.server.util.mapper.DiplomaTopicMapper;
 import pb.studyconnect.server.util.mapper.MentorMapper;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -44,6 +46,9 @@ class MentorServiceTest {
     @MockBean
     private DiplomaTopicRepository diplomaTopicRepository;
 
+    private final String mentorId = "aboba";
+
+    private final List<String> diplomaTopicIds = List.of("a", "b");
 
     @Test
     void mentorCreateWithSuccessTest() {
@@ -72,15 +77,15 @@ class MentorServiceTest {
                 .map(diplomaTopicMapper::mapToDiplomaTopic)
                 .toList();
         var mentor = mentorMapper.mapToMentor(mentorRequest);
-        mentor.setDiplomaTopicIds(List.of("a", "b"));
+        mentor.setDiplomaTopicIds(diplomaTopicIds);
 
-        Mockito.when(mentorRepository.findById("aboba")).thenReturn(Optional.of(mentor));
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.of(mentor));
 
-        var actual = mentorService.edit("aboba", mentorRequest);
+        var actual = mentorService.edit(mentorId, mentorRequest);
         var expected = MentorStub.getBaseMentorResponse();
         assertThat(actual).isEqualTo(expected);
 
-        Mockito.verify(diplomaTopicRepository).deleteAllById(List.of("a", "b"));
+        Mockito.verify(diplomaTopicRepository).deleteAllById(diplomaTopicIds);
         Mockito.verify(diplomaTopicRepository).saveAll(diplomaTopics);
         Mockito.verify(mentorRepository).save(mentor);
     }
@@ -88,12 +93,14 @@ class MentorServiceTest {
     @Test
     void mentorEditWithNotFoundErrorTest() {
         MentorRequest mentorRequest = MentorStub.getBaseMentorRequest();
-        Mockito.when(mentorRepository.findById("aboba")).thenReturn(Optional.empty());
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(PabloBullersException.class)
-                .isThrownBy(() -> mentorService.edit("aboba", mentorRequest))
+                .isThrownBy(() -> mentorService.edit(mentorId, mentorRequest))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found mentor with id: 'aboba'")
+                                && actual.getMessage().equals(
+                                MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+                        )
                 );
     }
 
@@ -105,22 +112,24 @@ class MentorServiceTest {
                 .map(diplomaTopicMapper::mapToDiplomaTopic)
                 .toList();
         var mentor = mentorMapper.mapToMentor(mentorRequest);
-        mentor.setDiplomaTopicIds(List.of("a", "b"));
+        mentor.setDiplomaTopicIds(diplomaTopicIds);
 
-        Mockito.when(mentorRepository.findById("aboba")).thenReturn(Optional.of(mentor));
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.of(mentor));
         Mockito.when(diplomaTopicRepository.findAllById(mentor.getDiplomaTopicIds())).thenReturn(diplomaTopics);
-        var mentorResponse = mentorService.get("aboba");
+        var mentorResponse = mentorService.get(mentorId);
         Assertions.assertEquals(MentorStub.getBaseMentorResponse(), mentorResponse);
     }
 
     @Test
     void mentorGetWithNotFoundErrorTest() {
-        Mockito.when(mentorRepository.findById("aboba")).thenReturn(Optional.empty());
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(PabloBullersException.class)
-                .isThrownBy(() -> mentorService.get("aboba"))
+                .isThrownBy(() -> mentorService.get(mentorId))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found mentor with id: 'aboba'")
+                                && actual.getMessage().equals(
+                                MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+                        )
                 );
     }
 
@@ -128,22 +137,24 @@ class MentorServiceTest {
     void mentorDeleteWithSuccessTest() {
         MentorRequest mentorRequest = MentorStub.getBaseMentorRequest();
         var mentor = mentorMapper.mapToMentor(mentorRequest);
-        mentor.setDiplomaTopicIds(List.of("a", "b"));
+        mentor.setDiplomaTopicIds(diplomaTopicIds);
 
-        Mockito.when(mentorRepository.findById("aboba")).thenReturn(Optional.of(mentor));
-        mentorService.delete("aboba");
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.of(mentor));
+        mentorService.delete(mentorId);
         Mockito.verify(diplomaTopicRepository).deleteAllById(mentor.getDiplomaTopicIds());
         Mockito.verify(mentorRepository).delete(mentor);
     }
 
     @Test
     void studentDeleteWithNotFoundErrorTest() {
-        Mockito.when(mentorRepository.findById("aboba")).thenReturn(Optional.empty());
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(PabloBullersException.class)
-                .isThrownBy(() -> mentorService.delete("aboba"))
+                .isThrownBy(() -> mentorService.delete(mentorId))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found mentor with id: 'aboba'")
+                                && actual.getMessage().equals(
+                                MessageFormat.format(NOT_FOUND_MENTOR_WITH_ID, mentorId)
+                        )
                 );
     }
 }

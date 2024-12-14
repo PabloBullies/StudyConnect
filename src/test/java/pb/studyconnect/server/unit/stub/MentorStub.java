@@ -2,8 +2,6 @@ package pb.studyconnect.server.unit.stub;
 
 import pb.studyconnect.server.api.dto.request.MentorRequest;
 import pb.studyconnect.server.api.dto.response.MentorResponse;
-import pb.studyconnect.server.model.Mentor;
-import pb.studyconnect.server.util.mapper.MentorMapper;
 
 import java.util.List;
 

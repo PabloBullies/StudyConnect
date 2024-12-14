@@ -18,7 +18,9 @@ import pb.studyconnect.server.unit.stub.StudentStub;
 import pb.studyconnect.server.util.mapper.StudentMapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
+import java.text.MessageFormat;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
@@ -34,6 +36,7 @@ class StudentServiceTest {
     @MockBean
     private StudentRepository studentRepository;
 
+    private final String studentId = "aboba";
 
     @Test
     void studentCreateWithSuccessTest() {
@@ -41,66 +44,75 @@ class StudentServiceTest {
         var actual = studentService.create(studentRequest);
         var expected = StudentStub.getBaseStudentResponse();
         assertThat(actual).isEqualTo(expected);
-        Mockito.verify(studentRepository, Mockito.times(1)).save(studentMapper.mapToStudent(studentRequest));
+        Mockito.verify(studentRepository).save(studentMapper.mapToStudent(studentRequest));
     }
 
     @Test
     void studentEditWithSuccessTest() {
         StudentRequest studentRequest = StudentStub.getBaseStudentRequest();
-        Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
-        var actual = studentService.edit("aboba", studentRequest);
+        Mockito.when(studentRepository.findById(studentId))
+                .thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
+        var actual = studentService.edit(studentId, studentRequest);
         var expected = StudentStub.getBaseStudentResponse();
         assertThat(actual).isEqualTo(expected);
-        Mockito.verify(studentRepository, Mockito.times(1)).save(studentMapper.mapToStudent(studentRequest));
+        Mockito.verify(studentRepository).save(studentMapper.mapToStudent(studentRequest));
     }
 
     @Test
     void studentEditWithNotFoundErrorTest() {
         StudentRequest studentRequest = StudentStub.getBaseStudentRequest();
-        Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(PabloBullersException.class)
-                .isThrownBy(() -> studentService.edit("aboba", studentRequest))
+                .isThrownBy(() -> studentService.edit(studentId, studentRequest))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found student with id: 'aboba'")
+                                && actual.getMessage().equals(
+                                MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+                        )
                 );
     }
 
     @Test
     void studentGetWithSuccessTest() {
         StudentRequest studentRequest = StudentStub.getBaseStudentRequest();
-        Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
-        StudentResponse resp = studentService.get("aboba");
+        Mockito.when(studentRepository.findById(studentId))
+                .thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
+        StudentResponse resp = studentService.get(studentId);
         Assertions.assertEquals(studentMapper.mapToStudentResponse(studentMapper.mapToStudent(studentRequest)), resp);
     }
 
     @Test
     void studentGetWithNotFoundErrorTest() {
-        Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(PabloBullersException.class)
-                .isThrownBy(() -> studentService.get("aboba"))
+                .isThrownBy(() -> studentService.get(studentId))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found student with id: 'aboba'")
+                                && actual.getMessage().equals(
+                                MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+                        )
                 );
     }
 
     @Test
     void studentDeleteWithSuccessTest() {
         StudentRequest studentRequest = StudentStub.getBaseStudentRequest();
-        Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
-        studentService.delete("aboba");
-        Mockito.verify(studentRepository, Mockito.times(1)).delete(studentMapper.mapToStudent(studentRequest));
+        Mockito.when(studentRepository.findById(studentId))
+                .thenReturn(Optional.of(studentMapper.mapToStudent(studentRequest)));
+        studentService.delete(studentId);
+        Mockito.verify(studentRepository).delete(studentMapper.mapToStudent(studentRequest));
     }
 
     @Test
     void studentDeleteWithNotFoundErrorTest() {
-        Mockito.when(studentRepository.findById("aboba")).thenReturn(Optional.empty());
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
         assertThatExceptionOfType(PabloBullersException.class)
-                .isThrownBy(() -> studentService.delete("aboba"))
+                .isThrownBy(() -> studentService.delete(studentId))
                 .matches(
                         actual -> actual.getCode().equals(HttpStatus.NOT_FOUND)
-                                && actual.getMessage().equals("Not found student with id: 'aboba'")
+                                && actual.getMessage().equals(
+                                MessageFormat.format(NOT_FOUND_STUDENT_WITH_ID, studentId)
+                        )
                 );
     }
 }

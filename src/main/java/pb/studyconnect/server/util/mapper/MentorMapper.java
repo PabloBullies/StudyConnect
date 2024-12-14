@@ -6,9 +6,7 @@ import pb.studyconnect.server.api.dto.request.MentorRequest;
 import pb.studyconnect.server.api.dto.response.DiplomaTopicResponse;
 import pb.studyconnect.server.api.dto.response.MentorResponse;
 import pb.studyconnect.server.api.dto.response.MentorResponseWithIsApprove;
-import pb.studyconnect.server.api.dto.response.StudentResponseWithIsApprove;
 import pb.studyconnect.server.model.Mentor;
-import pb.studyconnect.server.model.Student;
 
 import java.util.List;
 
