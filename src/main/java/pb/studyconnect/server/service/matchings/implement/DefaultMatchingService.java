@@ -2,6 +2,9 @@ package pb.studyconnect.server.service.matchings.implement;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import pb.studyconnect.server.api.dto.response.MentorResponse;
@@ -30,6 +33,7 @@ import static pb.studyconnect.server.util.Messages.NOT_FOUND_MATCHING_WITH_STUDE
 import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
 import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class DefaultMatchingService implements MatchingService {
@@ -47,6 +51,8 @@ public class DefaultMatchingService implements MatchingService {
     private final DiplomaTopicMapper diplomaTopicMapper;
 
     private final StudentMapper studentMapper;
+
+    private static final Marker marker = MarkerManager.getMarker("MATCHING SERVICE");
 
     @Override
     public void matchMentor(String studentId, String mentorId) {
@@ -76,6 +82,7 @@ public class DefaultMatchingService implements MatchingService {
         matching.setIsApprove(false);
 
         matchingRepository.save(matching);
+        log.info(marker, "Student with id {} made match to a mentor with id {}", studentId, mentorId);
     }
 
     @Override
@@ -103,6 +110,7 @@ public class DefaultMatchingService implements MatchingService {
 
         matchingDb.setIsApprove(isApprove);
         matchingRepository.save(matchingDb);
+        log.info(marker, "Mentor with id {} made {} approve to a student with id {}", mentorId, isApprove,  studentId);
     }
 
     @Override
@@ -131,6 +139,7 @@ public class DefaultMatchingService implements MatchingService {
             );
             mentorResponses.add(mentorResponse);
         }
+        log.info(marker, "All matching mentors have been received for student with id {}", studentId);
         return mentorResponses;
     }
 
@@ -159,6 +168,7 @@ public class DefaultMatchingService implements MatchingService {
 
             studentResponses.add(studentResponse);
         }
+        log.info(marker, "All matching students have been received for mentor with id {}", mentorId);
         return studentResponses;
     }
 }
