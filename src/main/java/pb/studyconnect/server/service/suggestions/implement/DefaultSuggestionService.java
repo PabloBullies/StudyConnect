@@ -1,6 +1,9 @@
 package pb.studyconnect.server.service.suggestions.implement;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -25,9 +28,9 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.matc
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
-import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
 import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class DefaultSuggestionService implements SuggestionService {
@@ -41,6 +44,8 @@ public class DefaultSuggestionService implements SuggestionService {
     private final DiplomaTopicMapper diplomaTopicMapper;
 
     private final MongoTemplate mongoTemplate;
+
+    private static final Marker marker = MarkerManager.getMarker("SUGGESTION SERVICE");
 
     @Override
     public MentorResponse suggestMentor(String studentId, Integer skip) {
@@ -68,6 +73,7 @@ public class DefaultSuggestionService implements SuggestionService {
                 .toList();
 
         if (diplomaTopicIds.isEmpty()) {
+            log.info(marker, "No suitable diploma topics found");
             return null;
         }
 
@@ -84,12 +90,15 @@ public class DefaultSuggestionService implements SuggestionService {
         );
 
         if (mentorResults.getMappedResults().isEmpty()) {
+            log.info(marker, "No suitable mentors found");
             return null;
         }
 
         var mentor = mentorResults.getMappedResults().getFirst();
 
         var diplomaTopics = diplomaTopicRepository.findAllById(mentor.getDiplomaTopicIds());
+
+        log.info(marker, "Suggest mentor named {} for student named {}", mentor.getName(), student.getName());
 
         return mentorMapper.mapToMentorResponse(
                 mentor,

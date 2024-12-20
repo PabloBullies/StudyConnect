@@ -1,6 +1,9 @@
 package pb.studyconnect.server.service.mentors.implement;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,9 +21,8 @@ import pb.studyconnect.server.util.mapper.MentorMapper;
 import java.text.MessageFormat;
 
 import static pb.studyconnect.server.util.Messages.NOT_FOUND_MENTOR_WITH_ID;
-import static pb.studyconnect.server.util.Messages.NOT_FOUND_STUDENT_WITH_ID;
 
-
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class DefaultMentorService implements MentorService {
@@ -32,6 +34,8 @@ public class DefaultMentorService implements MentorService {
     private final MentorRepository mentorRepository;
 
     private final DiplomaTopicRepository diplomaTopicRepository;
+
+    private static final Marker marker = MarkerManager.getMarker("MENTOR SERVICE");
 
     @Transactional
     @Override
@@ -45,6 +49,7 @@ public class DefaultMentorService implements MentorService {
         diplomaTopicRepository.saveAll(diplomaTopics);
         mentor.setDiplomaTopicIds(diplomaTopics.stream().map(DiplomaTopic::getId).toList());
         mentorRepository.save(mentor);
+        log.info(marker, "Mentor with name {} was created", mentor.getName());
         return mentorMapper.mapToMentorResponse(
                 mentor,
                 diplomaTopics.stream().map(diplomaTopicMapper::mapToDiplomaTopicResponse).toList()
@@ -77,6 +82,7 @@ public class DefaultMentorService implements MentorService {
         mentor.setDepartment(mentorRequest.department());
         mentor.setDiplomaTopicIds(diplomaTopics.stream().map(DiplomaTopic::getId).toList());
         mentorRepository.save(mentor);
+        log.info(marker, "Mentor with name {} was edited", mentor.getName());
         return mentorMapper.mapToMentorResponse(
                 mentor,
                 diplomaTopics.stream().map(diplomaTopicMapper::mapToDiplomaTopicResponse).toList()
@@ -93,6 +99,7 @@ public class DefaultMentorService implements MentorService {
                         )
                 );
         var diplomaTopics = diplomaTopicRepository.findAllById(mentor.getDiplomaTopicIds());
+        log.info(marker, "Mentor with name {} was received", mentor.getName());
         return mentorMapper.mapToMentorResponse(
                 mentor,
                 diplomaTopics.stream().map(diplomaTopicMapper::mapToDiplomaTopicResponse).toList()
@@ -113,6 +120,7 @@ public class DefaultMentorService implements MentorService {
             diplomaTopicRepository.deleteAllById(mentor.getDiplomaTopicIds());
         }
         mentorRepository.delete(mentor);
+        log.info(marker, "Mentor with id {} was deleted", mentorId);
     }
 
 
